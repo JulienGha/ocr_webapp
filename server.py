@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from rq import Queue
 from worker import conn
 from tasks import process_image
 
 app = Flask(__name__)
+CORS(app)
 q = Queue(connection=conn)
 
 

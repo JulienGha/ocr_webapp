@@ -1,8 +1,14 @@
 Optical Character Recognition API
 
-Clone
+In your terminal goes to the folder where you want to deploy the project.
+
+Run in the terminal:
+- git clone https://github.com/JulienGha/ocr_webapp.git if you have access, otherwise unzip the folder.
+- cd ocr_webapp
 
 Run the OCR API:
+- Make sure that DOcker is installed and can run.
+- Check if there is an app running on port 5000 (lsof -i :5000)
 - docker-compose up --build
 
 Run the front:

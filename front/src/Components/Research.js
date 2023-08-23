@@ -9,6 +9,7 @@ const Research = () => {
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [detectionResult, setDetectionResult] = useState(null);
+  const [imageSent, setImageSent] = useState(null)
   const [error, setError] = useState(null);
 
   const handleImageUpload = async () => {
@@ -17,16 +18,37 @@ const Research = () => {
     const formData = new FormData();
     formData.append('image', file);
 
+    const serverURL = 'http://localhost:5000/image';
+
     try {
       // We send the request to the server
-      const response = await axios.post(`http://localhost:5000/api/detect`, formData);
-      setDetectionResult(response.data);
+      const response = await axios.post(serverURL, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      console.log(response)
+      setImageSent(1)
       setError(null);
     } catch (error) {
       console.error(error);
       setError('Error met when uploading the image');
     }
-  };
+};
+
+const getImageUpdate = async () => {
+
+  try {
+    // We send the request to the server to get image update
+    const response = await axios.get(`http://localhost:5000/image`);
+    setDetectionResult(response.data);
+    setError(null);
+  } catch (error) {
+    console.error(error);
+    setError('Error met when uploading the image');
+  }
+};
+
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -43,7 +65,7 @@ const Research = () => {
     }
 
     // Different image types accepted by our server
-    const allowedTypes = ['image/png', 'image/tif'];
+    const allowedTypes = ['image/png', 'image/tiff'];
     if (!allowedTypes.includes(file.type)) {
       setError('Invalid file, you must use a .tif or .png');
       return;
@@ -54,9 +76,9 @@ const Research = () => {
   };
 
   const removeImage = () => {
-    setSelectedImage('');
-    setDetectionResult('');
-    setError('');
+    setSelectedImage(null);
+    setDetectionResult(null);
+    setError(null);
   };
 
   
@@ -65,10 +87,15 @@ const Research = () => {
       <h1 className='Title'>Text detector</h1>
       <input type="file" accept="image/*" onChange={handleFileChange} />
       {error && <p>{error}</p>}
-      {selectedImage && (
+      {selectedImage && !imageSent && (
         <>
           <button onClick={handleImageUpload}>Upload image</button>
           <button onClick={removeImage}>Delete image</button>
+        </>
+      )}
+      {imageSent && (
+        <>
+          <button onClick={getImageUpdate}>GetUpadte</button>
         </>
       )}
       {detectionResult && (

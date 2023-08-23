@@ -1,7 +1,9 @@
 Optical Character Recognition API
 
-Run the docker:
+Clone
 
+Run the OCR API:
+- docker-compose up --build
 
 Run the front:
 - Go to the front directory.
@@ -10,3 +12,4 @@ Run the front:
 - If Node is not installed, install it.
 - In the terminal, run the command "npm install".
 - Still in the terminal, execute the command "npm start".
+- Once the React starts, choose a tiff or png who weights less than 3MB.

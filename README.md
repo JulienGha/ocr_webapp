@@ -7,8 +7,9 @@ Run in the terminal:
 - cd ocr_webapp
 
 Run the OCR API:
-- Make sure that DOcker is installed and can run.
+- Make sure that Docker is installed and can run.
 - Check if there is an app running on port 5000 (lsof -i :5000)
+- docker build . -t tesseract:0.1
 - docker-compose up --build
 
 Run the front:

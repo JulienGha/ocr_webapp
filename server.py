@@ -11,7 +11,7 @@ q = Queue(connection=conn)
 
 @app.route('/image', methods=['POST'])
 def post_image():
-    image_data = request.json.get('image_data')
+    image_data = request.get('image_data')
     
     # Enqueue the image processing task
     job = q.enqueue(process_image, image_data)
@@ -28,6 +28,11 @@ def get_image():
         return jsonify({"task_id": job.result}), 200
     else:
         return jsonify({"task_id": None}), 202
+
+
+@app.route('/test', methods=['GET'])
+def get_test():
+    return "good"
 
 
 if __name__ == '__main__':

@@ -1,23 +1,24 @@
-version: '3.7'
-
+version: '3'
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.web
     ports:
       - "5000:5000"
-    depends_on:
-      - redis
-  redis:
-    image: "redis:latest"
+    volumes:
+      - ./data:/data
   worker:
-    build: .
-    command: python worker.py
-    depends_on:
-      - redis
-      - tesseract
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    volumes:
+      - ./data:/data
   tesseract:
     build:
       context: .
       dockerfile: Dockerfile.tesseract
     volumes:
       - ./data:/data
+  redis:
+    image: "redis:alpine"

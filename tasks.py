@@ -1,18 +1,22 @@
 import os
-import base64
-from PIL import Image
-from io import BytesIO
+from werkzeug.datastructures import FileStorage
 
 
-def process_image(image_data_b64):
+def process_image(file: FileStorage):
+    # Ensure the passed object is a file
+    if not isinstance(file, FileStorage):
+        raise ValueError("Expected FileStorage object as input.")
 
-    image_data = base64.b64decode(image_data_b64)
-    image = Image.open(BytesIO(image_data))
+    # Create a temporary filename
     image_filename = f"temp_{os.urandom(4).hex()}.png"
-    image.save(image_filename)
+
+    # Save the uploaded image
+    file.save(image_filename)
 
     # Process with tesseract
     os.system(f"tesseract --psm 1 --oem 1 {image_filename} output")
+
+    # Read the output
     with open("output.txt", "r") as f:
         recognized_text = f.read().strip()
 

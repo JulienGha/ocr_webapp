@@ -7,14 +7,25 @@ from tasks import process_image
 app = Flask(__name__)
 CORS(app)
 q = Queue(connection=conn)
+ALLOWED_EXTENSIONS = {'png', 'tiff'}    # defining the possible file format
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route('/image', methods=['POST'])
 def post_image():
-    image_data = request.get('image_data')
-    
-    # Enqueue the image processing task
-    job = q.enqueue(process_image, image_data)
+    if 'image' not in request.files:
+        return jsonify({"error": "No image part in the request"}), 400
+    file = request.files['image']
+
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    if file and allowed_file(file.filename):
+        # Enqueue the image processing task
+        job = q.enqueue(process_image, file)
     
     return jsonify({"task_id": job.get_id()}), 202
 

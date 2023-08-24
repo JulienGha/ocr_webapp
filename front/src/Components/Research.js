@@ -11,14 +11,13 @@ const Research = () => {
   const [detectionResult, setDetectionResult] = useState(null);
   const [imageSent, setImageSent] = useState(null)
   const [error, setError] = useState(null);
+  const serverURL = 'http://localhost:5000/image';
 
   const handleImageUpload = async () => {
     const file = selectedImage;
 
     const formData = new FormData();
     formData.append('image', file);
-
-    const serverURL = 'http://0.0.0.0:5000/image';
 
     try {
       // We send the request to the server
@@ -40,7 +39,7 @@ const getImageUpdate = async () => {
 
   try {
     // We send the request to the server to get image update
-    const response = await axios.get(`http://0.0.0.0:5000/image`);
+    const response = await axios.get(serverURL);
     setDetectionResult(response.data);
     if (detectionResult > 1) {
       setImageSent(null)

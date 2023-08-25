@@ -1,26 +1,40 @@
 import os
-from werkzeug.datastructures import FileStorage
+
+current_directory = os.getcwd()
+
+def run_tesseract(input_file):
+    cmd = f"docker run --rm -v $(pwd)/temp_files/:/mnt tesseract:0.1 tesseract /mnt/{input_file} output"
+    os.system(cmd)
+    cmd = f"docker run --rm -v $(pwd)/temp_files/:/mnt tesseract:0.1 tesseract /mnt/{input_file} stdout"
+    os.system(cmd)
+    # Cleanup temp files
+    os.remove(f"./temp_files/{input_file}")
+    # Read the output
+    with open("output.txt", "r") as f:
+        recognized_text = f.read().strip()
+    return recognized_text
 
 
-def process_image(file: FileStorage):
-    # Ensure the passed object is a file
-    if not isinstance(file, FileStorage):
-        raise ValueError("Expected FileStorage object as input.")
+def simple_task():
+    print("Task was picked up by worker.")
 
-    # Create a temporary filename
-    image_filename = f"temp_{os.urandom(4).hex()}.png"
 
-    # Save the uploaded image
-    file.save(image_filename)
+def process_image_from_path(file_name: str):
 
-    # Process with tesseract
-    os.system(f"tesseract --psm 1 --oem 1 {image_filename} output")
+    print("Processing image started...")
+
+    cmd = f"docker run --rm -v $(pwd)/temp_files/:/mnt tesseract:0.1 tesseract /mnt/{file_name} output"
+    os.system(cmd)
+
+    cmd = f"docker run --rm -v ./temp_files/:/mnt tesseract:0.1 /mnt/{file_name} stdout"
+    os.system(cmd)
 
     # Read the output
     with open("output.txt", "r") as f:
         recognized_text = f.read().strip()
 
     # Cleanup temp files
-    os.remove(image_filename)
+    os.remove(f"./temp_files/{file_name}")
 
+    print("Processing image completed.")
     return recognized_text

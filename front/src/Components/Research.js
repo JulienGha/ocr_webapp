@@ -11,7 +11,7 @@ const Research = () => {
   const [detectionResult, setDetectionResult] = useState(null);
   const [imageSent, setImageSent] = useState(null)
   const [error, setError] = useState(null);
-  const serverURL = 'http://localhost:5000/image';
+  const serverURL = `http://localhost:5000/image`;
 
   const handleImageUpload = async () => {
     const file = selectedImage;
@@ -27,7 +27,7 @@ const Research = () => {
         }
       });
       console.log(response)
-      setImageSent(1)
+      setImageSent(response.data.task_id)
       setError(null);
     } catch (error) {
       console.error(error);
@@ -39,11 +39,9 @@ const getImageUpdate = async () => {
 
   try {
     // We send the request to the server to get image update
-    const response = await axios.get(serverURL);
-    setDetectionResult(response.data);
-    if (detectionResult > 1) {
-      setImageSent(null)
-    }
+    const response = await axios.get(`${serverURL}?task_id=${imageSent}`);
+    console.log(response)
+    setDetectionResult(response.data.result);
     setError(null);
   } catch (error) {
     console.error(error);
@@ -97,7 +95,8 @@ const getImageUpdate = async () => {
       )}
       {imageSent && (
         <>
-          <button onClick={getImageUpdate}>GetUpadte</button>
+          <p>Your task_id {imageSent}</p>
+          <button onClick={getImageUpdate}>GetUpdate</button>
         </>
       )}
       {detectionResult && (

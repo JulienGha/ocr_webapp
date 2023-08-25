@@ -31,12 +31,12 @@ def post_image():
 
     unique_id = datetime.now().strftime("%Y%m%d%H%M%S")
 
-    os.makedirs("./temp_files", exist_ok=True)
+    os.makedirs("/data/temp_files", exist_ok=True)
 
     if file and allowed_file(file.filename):
         # Enqueue the image processing task
         temp_filename = unique_id + "." + file.filename.rsplit('.', 1)[1].lower()
-        file.save(f"./temp_files/{temp_filename}")
+        file.save(f"/data/temp_files/{temp_filename}")
         job = q.enqueue(run_tesseract, temp_filename, job_id=unique_id)
 
     if job:

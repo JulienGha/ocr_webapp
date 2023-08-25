@@ -3,7 +3,7 @@ from rq import Worker, Queue, Connection
 
 listen = ['high', 'default', 'low']
 
-redis_url = 'redis://127.0.0.1:6379'
+redis_url = 'redis://redis:6379'
 
 conn = redis.from_url(redis_url)
 

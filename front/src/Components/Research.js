@@ -101,7 +101,7 @@ const getImageUpdate = async () => {
       )}
       {detectionResult && (
         <div>
-          <h2>Text Detected (output.txt available on the app code):</h2>
+          <h2>Text Detected:</h2>
           <p>{detectionResult}</p>
         </div>
       )}

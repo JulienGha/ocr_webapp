@@ -2,15 +2,18 @@ import os
 
 
 def run_tesseract(input_file):
-    cmd = f"docker run --rm -v ./temp_files/:/mnt tesseract:0.1 /mnt/{input_file} stdout"
+    input_path = f"/data/temp_files/{input_file}"
+    output_path = f"/data/temp_files/output_{input_file}.txt"
+    cmd = f"tesseract {input_path} {output_path.rsplit('.', 1)[0]}"
     os.system(cmd)
-    cmd = f"docker run --rm -v ./temp_files/:/mnt tesseract:0.1 /mnt/{input_file} output"
-    os.system(cmd)
-    # Cleanup temp files
-    os.remove(f"./temp_files/{input_file}")
-    # Read the output
-    with open("output.txt", "r") as f:
+
+    os.remove(input_path)
+
+    with open(output_path, "r") as f:
         recognized_text = f.read().strip()
+
+    os.remove(output_path)
+
     return recognized_text
 
 

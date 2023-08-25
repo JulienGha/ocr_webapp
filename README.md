@@ -21,7 +21,7 @@ Run the front:
 - Once the React starts, choose a tif or png who weights less than 3MB.
 
 The application is composed by two main components: the server and the user interface (front).
-- Server & OCR Initialization: Both the server and the OCR are initialize using Docker, ensuring a consistent and reproducible environment for deployment.
+- Server & OCR Initialization: Both the server and the OCR are initialize using Docker, ensuring a reproducible environment for deployment.
 - The server is divided into three parts:
   - server.py: This script sets up the server, listens for incoming requests, and delegates tasks as necessary.
   - tasks.py: This script handles image processing by giving the function to the workers.

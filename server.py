@@ -9,7 +9,7 @@ import os
 app = Flask(__name__)
 CORS(app)
 q = Queue(connection=conn)
-ALLOWED_EXTENSIONS = {'png', 'tiff', 'tif'}    # defining the possible file format
+ALLOWED_EXTENSIONS = {'png', 'tif'}    # defining the possible file format
 
 
 def allowed_file(filename):
@@ -40,7 +40,7 @@ def post_image():
         job = q.enqueue(run_tesseract, temp_filename, job_id=unique_id)
 
     if job:
-        return jsonify({"task_id": job.get_id()}), 202
+        return jsonify({"task_id": unique_id}), 202
     else:
         return jsonify({"error": "Failed to enqueue job"}), 500
 

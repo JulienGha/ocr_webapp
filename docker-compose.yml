@@ -14,6 +14,12 @@ services:
       dockerfile: Dockerfile.worker
     volumes:
       - ./data:/data
+  tesseract:
+    build:
+      context: .
+      dockerfile: Dockerfile.tesseract
+    volumes:
+      - ./data:/data
   redis:
     image: "redis:alpine"
 

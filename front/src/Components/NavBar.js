@@ -6,7 +6,7 @@ import "../Styles/NavBar.css"
 const NavBar = () => {
 
     const sendRequest = async () => {
-        // fonction de test pour le serveur python
+        // Test function to see if the server is answering
         try {
           const response = await axios.get(`http://localhost:5000/test`);
           console.log(response)

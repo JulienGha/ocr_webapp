@@ -40,8 +40,10 @@ const getImageUpdate = async () => {
   try {
     // We send the request to the server to get image update
     const response = await axios.get(`${serverURL}?task_id=${imageSent}`);
-    console.log(response)
     setDetectionResult(response.data.result);
+    if (response.data.result) { //if we get a detection, then we reset the front so the user can send a new image
+      setImageSent(null)
+    }
     setError(null);
   } catch (error) {
     console.error(error);

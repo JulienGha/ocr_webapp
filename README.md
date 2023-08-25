@@ -16,6 +16,7 @@ Run the front:
 - Open your IDE.
 - Verify that Node is installed by executing the command "node -v" in the terminal.
 - If Node is not installed, install it.
+- In the terminal, run the command (assuming youu are in ocr_webapp directory) cd front
 - In the terminal, run the command "npm install".
 - Still in the terminal, execute the command "npm start".
 - Once the React starts, choose a tif or png who weights less than 3MB.
